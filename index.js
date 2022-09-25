@@ -1,19 +1,18 @@
-const { Sequelize } = require("sequelize");
+const dotenv = require("dotenv");
 const express = require("express");
 const app = express();
+const bodyParser = require("body-parser");
+const ProductRouter = require("./routes/ProductRoutes");
 
-const sequelize = new Sequelize("ecommerce", "root", "rootroot", {
-  host: "localhost",
-  dialect: "mysql",
-});
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+dotenv.config();
 
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, async () => {
-  try {
-    await sequelize.authenticate();
-    console.log("Connection has been established successfully.");
-    console.log(`Server is running on port http://localhost:${PORT}.`);
-  } catch (error) {
-    console.error("Unable to connect to the database:", error);
-  }
+const port = process.env.PORT || 8080;
+
+const productRouter = require("./routes/ProductRoutes");
+app.use("/api/product", productRouter);
+
+app.listen(port, () => {
+  console.log(`server starts at http://localhost:${port}`);
 });
