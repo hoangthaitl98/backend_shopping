@@ -4,9 +4,40 @@ const ProductController = {
   getAllProduct: async (req, res) => {
     try {
       let products = await Product.findAll({});
-      res.status(200).send(products);
+      return res.status(200).send(products);
     } catch (error) {
-      res.status(500).send(error);
+      return res.status(500).send(error);
+    }
+  },
+
+  addProduct: async (req, res) => {
+    try {
+      const newProduct = await Product.create({ ...req.body });
+      if (!newProduct.name) {
+        throw new Error("name is mandatory");
+      } else {
+        return res.status(200).send("Create successfull");
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  },
+
+  updateProduct: async (req, res) => {
+    try {
+      await Product.update({ ...req.body }, { where: { id: req.params.id } });
+      return res.status(200).send("Update successfull");
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  },
+
+  deleteProduct: async (req, res) => {
+    try {
+      await Product.destroy({ where: { id: req.params.id } });
+      return res.status(200).send("Delete successfull");
+    } catch (error) {
+      return res.status(500).send(error);
     }
   },
 };

@@ -1,6 +1,7 @@
 const { Sequelize, DataTypes } = require("sequelize");
+require("dotenv").config();
 
-const sequelize = new Sequelize("shopping", "root", "rootroot", {
+const sequelize = new Sequelize(process.env.DB, "root", "rootroot", {
   dialect: "mysql",
 });
 
